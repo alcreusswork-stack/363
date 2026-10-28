@@ -1,0 +1,996 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>NIJIIRO KIDS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Kosugi+Maru&display=swap">
+
+<style>
+  /* ===== DESIGN TOKENS =====
+     Layout: full-width bands, card grid stacked single-col on mobile
+     Color: rainbow accent palette on white/cream, warm dark footer
+     Type: Nunito (display/UI) + Kosugi Maru (Japanese body)
+  */
+  :root {
+    --bg: #FFFDF7;
+    --bg2: #F5F0FF;
+    --fg: #2D2640;
+    --fg-muted: #6B5F80;
+    --card-bg: #FFFFFF;
+    --card-border: rgba(0,0,0,0.07);
+
+    --red:    #FF5C6E;
+    --orange: #FF8C42;
+    --yellow: #FFD23F;
+    --green:  #4DC97E;
+    --blue:   #3BAAFF;
+    --purple: #9B6BFF;
+    --pink:   #FF6BB5;
+
+    --accent: #9B6BFF;
+    --accent2: #3BAAFF;
+    --accent-fg: #FFFFFF;
+
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 6px 24px rgba(0,0,0,0.10);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+    --radius: 16px;
+    --radius-lg: 24px;
+
+    --font-display: 'Nunito', 'Kosugi Maru', sans-serif;
+    --font-body: 'Kosugi Maru', 'Nunito', sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1528;
+      --bg2: #231D38;
+      --fg: #F0EAF8;
+      --fg-muted: #A89BC2;
+      --card-bg: #2A2240;
+      --card-border: rgba(255,255,255,0.08);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.30);
+      --shadow-md: 0 6px 24px rgba(0,0,0,0.35);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.40);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1528;
+    --bg2: #231D38;
+    --fg: #F0EAF8;
+    --fg-muted: #A89BC2;
+    --card-bg: #2A2240;
+    --card-border: rgba(255,255,255,0.08);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.30);
+    --shadow-md: 0 6px 24px rgba(0,0,0,0.35);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.40);
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    padding-left: max(0px, env(safe-area-inset-left, 0px));
+    padding-right: max(0px, env(safe-area-inset-right, 0px));
+  }
+
+  img { max-width: 100%; display: block; }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ===== RAINBOW BAR ===== */
+  .rainbow-bar {
+    height: 6px;
+    background: linear-gradient(90deg,
+      var(--red) 0%, var(--orange) 17%, var(--yellow) 33%,
+      var(--green) 50%, var(--blue) 67%, var(--purple) 83%, var(--pink) 100%);
+  }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: var(--bg);
+    border-bottom: 1px solid var(--card-border);
+    padding-block: 14px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.2rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .logo-text span {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--fg-muted);
+    letter-spacing: 0.05em;
+  }
+  .header-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 10px 18px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .header-cta:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+  /* ===== HERO IMAGE ===== */
+  .hero-image-wrap {
+    width: 100%;
+    max-height: 540px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* ===== HERO TEXT ===== */
+  .hero-text-section {
+    background: linear-gradient(160deg, var(--purple) 0%, var(--blue) 100%);
+    padding-block: 56px 64px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero-text-section::before {
+    content: "🌈";
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.07;
+    top: -40px;
+    right: -20px;
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    padding: 5px 16px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    color: #fff;
+    text-wrap: balance;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero-title em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--yellow), var(--orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    color: rgba(255,255,255,0.88);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto 32px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--yellow);
+    color: #2D2640;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.05rem;
+    padding: 14px 28px;
+    border-radius: 50px;
+    box-shadow: 0 4px 16px rgba(255,210,63,0.45);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,210,63,0.55); }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 14px 24px;
+    border-radius: 50px;
+    border: 2px solid rgba(255,255,255,0.4);
+    transition: background 0.15s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.28); }
+
+  /* ===== SECTION WRAPPER ===== */
+  .section {
+    padding-block: 64px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .section-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    text-wrap: balance;
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+  .section-desc {
+    color: var(--fg-muted);
+    max-width: 560px;
+    margin-bottom: 40px;
+  }
+
+  /* ===== FEATURE CARDS ===== */
+  .features-bg {
+    background: var(--bg2);
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .feature-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  .feature-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+  }
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+  .feature-card p {
+    color: var(--fg-muted);
+    font-size: 0.93rem;
+    line-height: 1.65;
+  }
+
+  /* ===== BADGE STRIP ===== */
+  .badge-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.88rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ===== STRENGTHS ===== */
+  .strength-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .strength-item {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .strength-dot {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-top: 2px;
+  }
+  .strength-body h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+  }
+  .strength-body p {
+    color: var(--fg-muted);
+    font-size: 0.93rem;
+  }
+
+  /* ===== VOICE / REVIEW ===== */
+  .reviews-bg { background: var(--bg2); }
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .review-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+  .review-stars {
+    color: var(--yellow);
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+  .review-text {
+    font-size: 0.93rem;
+    line-height: 1.75;
+    color: var(--fg);
+  }
+  .review-quote {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+    font-size: 2.5rem;
+    color: var(--accent);
+    opacity: 0.15;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  /* ===== AREA ===== */
+  .area-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .area-chip {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ===== MAP ===== */
+  .map-bg { background: var(--bg2); }
+  .map-wrap {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    aspect-ratio: 16/8;
+    max-width: 100%;
+  }
+  .map-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .map-link-wrap {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .btn-map {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 12px 24px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-map:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+  /* ===== CONTACT ===== */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .contact-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .contact-card .label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .contact-card .value {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    word-break: break-all;
+  }
+  .contact-card .value a {
+    color: var(--accent);
+  }
+
+  /* ===== TRIAL BANNER ===== */
+  .trial-banner {
+    background: linear-gradient(135deg, var(--green) 0%, var(--blue) 100%);
+    border-radius: var(--radius-lg);
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .trial-banner::before {
+    content: "✨";
+    position: absolute;
+    font-size: 140px;
+    opacity: 0.08;
+    bottom: -20px;
+    left: -10px;
+    pointer-events: none;
+  }
+  .trial-banner h2 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: #fff;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+  .trial-banner p {
+    color: rgba(255,255,255,0.88);
+    margin-bottom: 28px;
+    font-size: 1rem;
+  }
+  .btn-trial {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    color: #2D7F5C;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.05rem;
+    padding: 14px 32px;
+    border-radius: 50px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transition: transform 0.15s;
+  }
+  .btn-trial:hover { transform: translateY(-2px); }
+
+  /* ===== COMING SOON ===== */
+  .coming-card {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .coming-icon { font-size: 2.4rem; flex-shrink: 0; }
+  .coming-card h3 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+  .coming-card p { font-size: 0.92rem; opacity: 0.88; }
+  .coming-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50px;
+    padding: 3px 12px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  /* ===== FOOTER ===== */
+  .site-footer {
+    background: #2D2640;
+    color: rgba(255,255,255,0.75);
+    padding-block: 48px 40px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .footer-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .footer-brand-text {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: #fff;
+    line-height: 1.1;
+  }
+  .footer-brand-text span {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+  }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .footer-links a {
+    color: rgba(255,255,255,0.65);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: color 0.15s;
+  }
+  .footer-links a:hover { color: #fff; }
+  .sns-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    transition: opacity 0.15s;
+  }
+  .sns-link:hover { opacity: 0.8; }
+  .sns-link svg { display: block; }
+
+  /* Instagram gradient button */
+  .sns-instagram { background: radial-gradient(circle at 30% 110%, #ffd500 0%, #ff7a00 25%, #ff1a6e 50%, #c41cb0 70%, #3600af 100%); }
+
+  .footer-divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-block: 24px;
+  }
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-info { font-size: 0.82rem; line-height: 1.8; }
+  .footer-info a { color: rgba(255,255,255,0.7); }
+  .footer-info a:hover { color: #fff; }
+  .footer-official-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 9px 18px;
+    border-radius: 50px;
+    transition: background 0.15s;
+  }
+  .footer-official-link:hover { background: rgba(255,255,255,0.18); }
+  .copyright {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 16px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .section { padding-block: 48px; }
+    .hero-text-section { padding-block: 44px 52px; }
+    .trial-banner { padding: 32px 20px; }
+    .footer-top { flex-direction: column; gap: 20px; }
+    .coming-card { flex-direction: column; text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+
+<!-- Rainbow bar -->
+<div class="rainbow-bar"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="https://nanairo-power.com/" target="_blank" rel="noopener" class="header-logo">
+      <div class="logo-mark">N</div>
+      <div class="logo-text">
+        NIJIIRO KIDS
+        <span>にじいろキッズ</span>
+      </div>
+    </a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSef7GZ9QHWamCy3_pSzw5WWueGrKn9muUW0DQ7O-042_rdxgA/viewform" target="_blank" rel="noopener" class="header-cta">
+      ✉ お問い合わせ
+    </a>
+  </div>
+</header>
+
+<!-- ===== HERO IMAGE ===== -->
+<div class="hero-image-wrap">
+  <img src="images/hero.jpg" alt="NIJIIRO KIDSの子どもたちが元気に運動している様子">
+</div>
+
+<!-- ===== HERO TEXT ===== -->
+<section class="hero-text-section">
+  <div class="hero-eyebrow">🌈 三河エリア・体操教室</div>
+  <h1 class="hero-title">
+    <em>遊び</em>が育てる、<br>
+    運動の楽しさ。
+  </h1>
+  <p class="hero-sub">
+    「楽しいから、できるようになる」<br>
+    保育士・幼稚園教諭資格を持つ専門講師が、<br>
+    子どもの個性に合わせた指導で笑顔を育てます。
+  </p>
+  <div class="hero-actions">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSef7GZ9QHWamCy3_pSzw5WWueGrKn9muUW0DQ7O-042_rdxgA/viewform" target="_blank" rel="noopener" class="btn-primary">🎉 体験レッスンを申し込む</a>
+    <a href="https://nanairo-power.com/" target="_blank" rel="noopener" class="btn-secondary">公式HPを見る →</a>
+  </div>
+</section>
+
+<!-- ===== イチオシ FEATURES ===== -->
+<section class="section features-bg">
+  <div class="section-inner">
+    <div class="section-label">🌟 NIJIIRO KIDSの5つの特長</div>
+    <h2 class="section-title">遊びながら、心も体も育つ。</h2>
+    <p class="section-desc">子どもの「やってみたい！」を大切に、笑顔で成長できる環境を提供しています。</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#FFF0F5;">🎯</div>
+        <h3>遊びが育てる運動能力</h3>
+        <p>リズム感・平衡感覚・柔軟性など、成長期に欠かせない基礎体力を「うんどう遊び」を通して楽しく養います。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#F0F5FF;">🎓</div>
+        <h3>専門資格を持つ講師陣</h3>
+        <p>保育士資格・幼稚園教諭一種免許などの専門知識を持つ講師が一人ひとりの個性に合わせた指導を行います。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#F5FFF5;">💛</div>
+        <h3>自己肯定感を育む指導</h3>
+        <p>「できたこと」をしっかり褒め、諦めない大切さを伝えることで、体の成長だけでなく心の豊かさもサポートします。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#FFFFF0;">🎪</div>
+        <h3>多彩なイベントと出張指導</h3>
+        <p>定期的な体操教室のほか、三河各地での親子イベント開催や、園・学校への出張運動指導にも幅広く対応しています。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#F5F0FF;">📍</div>
+        <h3>地域密着の安心感</h3>
+        <p>岡崎市を中心に蒲郡・豊橋・西尾・安城など三河エリアで多くの実績があり、親しみやすい雰囲気で地域に根ざした運営をしています。</p>
+      </div>
+    </div>
+
+    <div class="badge-strip">
+      <span class="badge">🤸 体操・マット</span>
+      <span class="badge">🪂 縄跳び</span>
+      <span class="badge">⚽ ボール遊び</span>
+      <span class="badge">🥅 鉄棒</span>
+      <span class="badge">🎿 スキー教室</span>
+      <span class="badge">🔥 BBQイベント</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 強み ===== -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">💪 企業の強み</div>
+    <h2 class="section-title">選ばれる3つの理由</h2>
+
+    <div class="strength-list">
+      <div class="strength-item">
+        <div class="strength-dot" style="background:#FFF0F5;">👩‍🏫</div>
+        <div class="strength-body">
+          <h4>専門性の高い講師陣</h4>
+          <p>保育士資格や幼稚園教諭一種免許を持つプロが、子どもの発育に合わせた安心・安全な指導を行っています。子ども一人ひとりのペースを尊重し、無理なく成長を後押しします。</p>
+        </div>
+      </div>
+      <div class="strength-item">
+        <div class="strength-dot" style="background:#F5FFF5;">😄</div>
+        <div class="strength-body">
+          <h4>「楽しさ」重視の指導</h4>
+          <p>独自の「うんどう遊び」を通じ、運動が苦手な子でも笑顔で夢中になれる時間を大切にしています。楽しいと感じることが、子どもの運動意欲と自信につながります。</p>
+        </div>
+      </div>
+      <div class="strength-item">
+        <div class="strength-dot" style="background:#F0F5FF;">🚌</div>
+        <div class="strength-body">
+          <h4>柔軟な出張・イベント対応</h4>
+          <p>岡崎市を中心に東海・北陸エリアまで幅広く出張し、BBQやスキー教室など親子で楽しめる多彩なイベントも企画・開催しています。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 体験レッスン BANNER ===== -->
+<section class="section" style="padding-block: 0 64px;">
+  <div class="section-inner">
+    <div class="trial-banner">
+      <h2>🎉 体験レッスン受付中！</h2>
+      <p>まずは気軽に体験してみてください。<br>メールにてお気軽にお問い合わせください。</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSef7GZ9QHWamCy3_pSzw5WWueGrKn9muUW0DQ7O-042_rdxgA/viewform" target="_blank" rel="noopener" class="btn-trial">🎉 体験を申し込む</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== クチコミ ===== -->
+<section class="section reviews-bg">
+  <div class="section-inner">
+    <div class="section-label">⭐ 保護者の声</div>
+    <h2 class="section-title">通っている子どもたちの保護者から</h2>
+
+    <div class="review-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-quote">"</div>
+        <p class="review-text">
+          土曜日の安城西尾教室に通っています。お調子者の息子も集中して毎回楽しく運動してます。指導の仕方が本当に上手で、苦手だった縄跳びも少しずつ跳べるようになってきました。大人数をひとりで指導されていますが、子供たちも飽きずに楽しめる工夫がいっぱいです。諦めずにやってみる気持ちが育っていくと思うので、おすすめです。
+        </p>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-quote">"</div>
+        <p class="review-text">
+          豊橋市のアイプラザに通っている生徒保護者です。通い始めて約半年が経ちましたが、息子はポッキー先生が大好きなようで毎回とても楽しく通わせていただいています。鉄棒、マット、なわとび、ボール遊びなど回を重ねるごとに出来ることが増えていき、保育園や公園でも遊具を使って教わった技を嬉しそうに披露している姿を見ると、本当に入会してよかったなぁと思います。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 開催エリア ===== -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">📍 開催エリア</div>
+    <h2 class="section-title">三河エリアを中心に展開中</h2>
+    <p class="section-desc">岡崎市を拠点に、出張指導にも対応しています。</p>
+
+    <div class="area-chips">
+      <span class="area-chip">📌 岡崎市</span>
+      <span class="area-chip">📌 蒲郡市</span>
+      <span class="area-chip">📌 豊橋市</span>
+      <span class="area-chip">📌 西尾市</span>
+      <span class="area-chip">📌 安城市</span>
+      <span class="area-chip">🚌 東海・北陸エリア（出張）</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MAP ===== -->
+<section class="section map-bg">
+  <div class="section-inner">
+    <div class="section-label">🗺 アクセス</div>
+    <h2 class="section-title">所在地</h2>
+    <p class="section-desc">〒444-0241 愛知県岡崎市赤渋町蔵西33−１<br>TEL: 0564-74-5871　休校日：基本月曜日</p>
+
+    <div class="map-wrap">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3271.0586703977456!2d137.1343062!3d34.9300655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600497fc2323915f%3A0x3df8b24b5545f330!2z44Gr44GE44KN44Kt44OD44K65qCq5byP5Lya56S-!5e0!3m2!1sja!2sjp!4v1792560895412!5m2!1sja!2sjp"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        title="NIJIIRO KIDS 所在地マップ"
+        allowfullscreen></iframe>
+    </div>
+
+    <div class="map-link-wrap">
+      <a href="https://www.google.com/maps/place/%E3%81%AB%E3%81%98%E3%81%84%E3%82%8D%E3%82%AD%E3%83%83%E3%82%BA%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE/@34.9300655,137.1343062,17z/data=!3m1!4b1!4m6!3m5!1s0x600497fc2323915f:0x3df8b24b5545f330!8m2!3d34.9300655!4d137.1343062!16s%2Fg%2F11y1vm62jn?authuser=0&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D"
+         target="_blank" rel="noopener" class="btn-map">
+        🗺 Googleマップで見る
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 準備中サービス ===== -->
+<section class="section">
+  <div class="section-inner">
+    <div class="coming-card">
+      <div class="coming-icon">💬</div>
+      <div>
+        <div class="coming-badge">COMING SOON</div>
+        <h3>専門家へのチャット相談窓口</h3>
+        <p>子どもの運動・発育についての悩みを、専門家にチャットで気軽に相談できるサービスを準備中です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== お問い合わせ ===== -->
+<section class="section features-bg">
+  <div class="section-inner">
+    <div class="section-label">📬 CONTACT</div>
+    <h2 class="section-title">お問い合わせ・アクセス情報</h2>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="label">📞 電話番号</div>
+        <div class="value">0564-74-5871</div>
+      </div>
+      <div class="contact-card">
+        <div class="label">✉ メール</div>
+        <div class="value" style="font-size:0.88rem;">
+          <a href="mailto:pockyaikawa@gmail.com">pockyaikawa<br>@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="label">📍 住所</div>
+        <div class="value" style="font-size:0.88rem;">愛知県岡崎市<br>赤渋町蔵西33−１</div>
+      </div>
+      <div class="contact-card">
+        <div class="label">🚫 休校日</div>
+        <div class="value">基本月曜日</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo-mark" style="width:38px;height:38px;font-size:17px;border-radius:10px;">N</div>
+        <div class="footer-brand-text">
+          NIJIIRO KIDS
+          <span>にじいろキッズ株式会社</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="https://nanairo-power.com/" target="_blank" rel="noopener">公式サイト</a>
+        <a href="mailto:pockyaikawa@gmail.com">お問い合わせ</a>
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/nijiirokids/" target="_blank" rel="noopener" class="sns-link sns-instagram" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:24px;">
+      <a href="https://nanairo-power.com/" target="_blank" rel="noopener" class="footer-official-link">
+        🌐 公式サイトへ
+      </a>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-bottom">
+      <div class="footer-info">
+        〒444-0241 愛知県岡崎市赤渋町蔵西33−１<br>
+        TEL: <a href="tel:0564745871">0564-74-5871</a>
+        MAIL: <a href="mailto:pockyaikawa@gmail.com">pockyaikawa@gmail.com</a>
+      </div>
+    </div>
+
+    <p class="copyright">© 2024 にじいろキッズ株式会社 All Rights Reserved.</p>
+  </div>
+</footer>
+
+</body></html>
